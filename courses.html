@@ -2,74 +2,80 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>TechAcademy - Khóa Học</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Khóa Học - DevAcademy</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
-
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body class="bg-dark text-white">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top border-b">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="index.html">TechAcademy</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-item nav-link" href="index.html">Trang chủ</a>
-                <a class="nav-item nav-link active" href="courses.html">Khóa học</a>
-                <a class="nav-item nav-link" href="register.html">Đăng ký</a>
-                <a class="nav-item nav-link" href="registrations.html">Danh sách lớp</a>
+            <a class="navbar-brand text-gradient" href="index.html">DevAcademy</a>
+            <div class="navbar-nav ms-auto d-flex flex-row gap-3">
+                <a class="nav-link" href="index.html">Trang Chủ</a>
+                <a class="nav-link active" href="courses.html">Khóa Học</a>
+                <a class="nav-link" href="register.html">Đăng Ký</a>
+                <a class="nav-link" href="registrations.html">Danh Sách</a>
             </div>
         </div>
     </nav>
 
-    <div class="container my-4">
-        <h2 class="text-center mb-4">Danh Sách Khóa Học Công Nghệ</h2>
-
-        <!-- Bộ lọc Tìm kiếm và Lọc Danh mục -->
-        <div class="row g-3 mb-4 bg-light p-3 rounded">
-            <div class="col-md-6">
-                <input type="text" id="searchBox" class="form-control" placeholder="Nhập tên khóa học để tìm...">
-            </div>
+    <div class="container my-5">
+        <h2 class="mb-4 text-center">Chương Trình Đào Tạo</h2>
+        <div class="row g-3 bg-black p-4 rounded-3 border border-secondary shadow">
             <div class="col-md-4">
-                <select id="categorySelect" class="form-select">
-                    <option value="all">Tất cả danh mục</option>
-                    <option value="frontend">Frontend</option>
-                    <option value="backend">Backend</option>
+                <input type="text" id="searchName" class="form-control bg-dark text-white border-secondary" placeholder="Tìm theo tên khóa học...">
+            </div>
+            <div class="col-md-3">
+                <select id="filterCategory" class="form-select bg-dark text-white border-secondary">
+                    <option value="">Tất cả danh mục</option>
+                    <option value="Frontend">Frontend</option>
+                    <option value="Backend">Backend</option>
+                    <option value="Fullstack">Fullstack</option>
+                    <option value="Mobile App">Mobile App</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="filterLevel" class="form-select bg-dark text-white border-secondary">
+                    <option value="">Tất cả cấp độ</option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
                 </select>
             </div>
             <div class="col-md-2">
-                <button id="btnReset" class="btn btn-secondary w-100">Xóa bộ lọc</button>
+                <button id="btnReset" class="btn btn-outline-danger w-100">Xóa bộ lọc</button>
             </div>
         </div>
 
-        <!-- Vùng trống để mảng JavaScript tự động tạo 8 card khóa học ở đây -->
-        <div class="row g-4" id="courseList"></div>
+        <div class="row row-cols-1 row-cols-md-3 g-4 mt-4" id="courseContainer"></div>
     </div>
 
-    <!-- Bootstrap Modal tĩnh dùng chung để xem chi tiết -->
-    <div class="modal fade" id="detailModal" tabindex="-1">
-        <div class="modal-dialog">
+    <div class="modal fade" id="courseDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered text-dark">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold" id="modalTitle">Tên khóa học</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p id="modalBody">Nội dung chi tiết...</p>
+                    <img id="modalImage" src="" class="img-fluid rounded mb-3 w-100 object-fit-cover" style="height: 200px;" alt="">
+                    <p><strong>Danh mục:</strong> <span id="modalCategory" class="badge bg-primary"></span></p>
+                    <p><strong>Cấp độ:</strong> <span id="modalLevel" class="badge bg-info"></span></p>
+                    <p><strong>Khai giảng:</strong> <span id="modalDate"></span></p>
+                    <p><strong>Chi tiết môn học:</strong></p>
+                    <p id="modalDetailText" class="text-muted"></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <a href="register.html" class="btn btn-primary">Đăng ký học</a>
+                    <a id="modalRegLink" href="register.html" class="btn btn-success">Đăng Ký Học Ngay</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="bg-dark text-white text-center py-3 mt-5">
-        <p class="mb-0">TRƯỜNG ĐẠI HỌC BÌNH DƯƠNG - PHÂN HIỆU CÀ MAU</p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Nhúng file chứa mảng dữ liệu trước, file xử lý main sau -->
     <script src="assets/js/data.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

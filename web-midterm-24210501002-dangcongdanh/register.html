@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>TechAcademy - Đăng Ký</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="index.html">TechAcademy</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-item nav-link" href="index.html">Trang chủ</a>
+                <a class="nav-item nav-link" href="courses.html">Khóa học</a>
+                <a class="nav-item nav-link active" href="register.html">Đăng ký</a>
+                <a class="nav-item nav-link" href="registrations.html">Danh sách lớp</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5" style="max-width: 600px;">
+        <div class="card p-4 shadow-sm">
+            <h3 class="text-center text-primary fw-bold mb-4">Đăng Ký Nhập Học</h3>
+            
+            <form id="formDangKy">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Họ và tên:</label>
+                    <input type="text" id="txtHoten" class="form-control" placeholder="Nguyễn Văn A">
+                    <span id="errHoten" class="error-text"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Email:</label>
+                    <input type="text" id="txtEmail" class="form-control" placeholder="name@gmail.com">
+                    <span id="errEmail" class="error-text"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Số điện thoại:</label>
+                    <input type="text" id="txtSdt" class="form-control" placeholder="0912345678">
+                    <span id="errSdt" class="error-text"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Lớp:</label>
+                    <input type="text" id="txtLop" class="form-control" placeholder="Ví dụ: 24IT01">
+                    <span id="errLop" class="error-text"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Chọn khóa học:</label>
+                    <select id="selKhoahoc" class="form-select">
+                        <option value="">-- Chọn khóa học --</option>
+                        <option value="HTML & CSS Căn Bản">HTML & CSS Căn Bản</option>
+                        <option value="JavaScript & DOM">JavaScript & DOM</option>
+                        <option value="Bootstrap 5 UI">Bootstrap 5 UI</option>
+                        <option value="Node.js Cơ Bản">Node.js Cơ Bản</option>
+                        <option value="Cơ Cơ Dữ Liệu SQL">Cơ Cơ Dữ Liệu SQL</option>
+                    </select>
+                    <span id="errKhoahoc" class="error-text"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Ghi chú (Không bắt buộc):</label>
+                    <textarea id="txtGhichu" class="form-control" rows="2"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 fw-bold py-2">GỬI THÔNG TIN ĐĂNG KÝ</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p class="mb-0">TRƯỜNG ĐẠI HỌC BÌNH DƯƠNG - PHÂN HIỆU CÀ MAU</p>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

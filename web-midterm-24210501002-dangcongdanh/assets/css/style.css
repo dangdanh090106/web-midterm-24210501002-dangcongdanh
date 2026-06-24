@@ -1,0 +1,21 @@
+/* assets/css/style.css */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Hiệu ứng khi di chuột vào thẻ khóa học */
+.course-card {
+    transition: transform 0.2s;
+}
+.course-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Màu cho thông báo lỗi dưới ô nhập liệu */
+.error-text {
+    color: red;
+    font-size: 13px;
+    display: block;
+    margin-top: 5px;
+}

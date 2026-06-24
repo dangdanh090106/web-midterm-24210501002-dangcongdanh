@@ -1,21 +1,266 @@
-/* assets/css/style.css */
+
+:root {
+    --bg-main: #0B0F19;        
+    --text-primary: #FFFFFF;    
+    --text-secondary: #94A3B8;  
+    --neon-cyan: #00F2FE;       
+    --neon-purple: #9B51E0;     
+    --gradient-primary: linear-gradient(135deg, #0072FF 0%, #00F2FE 100%);
+    --gradient-neon: linear-gradient(90deg, #4FACFE 0%, #00F2FE 50%, #9B51E0 100%);
+    --border-color: rgba(255, 255, 255, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+    transition: all 0.25s ease-in-out;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    overflow-x: hidden;
 }
 
-/* Hiệu ứng khi di chuột vào thẻ khóa học */
+.text-gradient {
+    background: var(--gradient-neon);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.navbar {
+    background: rgba(11, 15, 25, 0.75) !important;
+    backdrop-filter: blur(12px); 
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 0;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.navbar-nav .nav-link {
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+    padding: 8px 16px !important;
+    position: relative;
+}
+
+.navbar-nav .nav-link:hover, 
+.navbar-nav .nav-link.active {
+    color: var(--neon-cyan) !important;
+}
+
+
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 16px;
+    background: var(--gradient-primary);
+    transition: width 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active::after {
+    width: calc(100% - 32px);
+}
+
+
+.hero-section {
+    
+    background: linear-gradient(135deg, rgba(11, 15, 25, 0.9) 30%, rgba(6, 9, 19, 0.95) 100%),
+                url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1920&auto=format&fit=crop'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 65vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.btn-cyan {
+    background: var(--gradient-primary);
+    color: #000000 !important;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 28px;
+    box-shadow: 0 4px 14px rgba(0, 242, 254, 0.3);
+}
+
+.btn-cyan:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 242, 254, 0.6);
+}
+
+.btn-outline-light {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 12px 28px;
+}
+
+.btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #ffffff;
+    transform: translateY(-2px);
+}
+
 .course-card {
-    transition: transform 0.2s;
-}
-.course-card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* Màu cho thông báo lỗi dưới ô nhập liệu */
-.error-text {
-    color: red;
-    font-size: 13px;
-    display: block;
-    margin-top: 5px;
+.course-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    border-color: rgba(0, 242, 254, 0.4) !important;
+    box-shadow: 0 15px 35px rgba(0, 242, 254, 0.15);
 }
+
+
+.card-img-container {
+    overflow: hidden;
+    position: relative;
+}
+
+.course-card .card-img-top {
+    transition: transform 0.5s ease;
+}
+
+.course-card:hover .card-img-top {
+    transform: scale(1.08);
+}
+
+.badge {
+    padding: 6px 12px;
+    font-weight: 600;
+    border-radius: 6px;
+}
+
+.bg-primary {
+    background-color: rgba(0, 114, 255, 0.2) !important;
+    color: #38BDF8 !important;
+    border: 1px solid rgba(0, 114, 255, 0.3);
+}
+
+.bg-info {
+    background-color: rgba(155, 81, 224, 0.2) !important;
+    color: #C084FC !important;
+    border: 1px solid rgba(155, 81, 224, 0.3);
+}
+
+.card-title {
+    color: #FFFFFF;
+    font-size: 1.2rem;
+    line-height: 1.4;
+}
+
+.card-text {
+    color: var(--text-secondary) !important;
+}
+
+
+.card.bg-black {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.form-control, .form-select {
+    background-color: rgba(11, 15, 25, 0.6) !important;
+    border: 1px solid var(--border-color) !important;
+    color: #FFFFFF !important;
+    padding: 12px 16px;
+    border-radius: 10px;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--neon-cyan) !important;
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.25) !important;
+    outline: none;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #E2E8F0;
+    margin-bottom: 8px;
+}
+
+
+.table-responsive {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 16px;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+
+.feature-section {
+    background-color: #0B0F19; 
+}
+
+
+.feature-card {
+    background: rgba(21, 29, 48, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    height: 100%;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0, 242, 254, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 242, 254, 0.1);
+}
+
+
+.feature-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-icon {
+    font-size: 1.5rem;
+}
+
+
+.feature-card h3 {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+}
+
+
+.feature-text {
+    color: #94A3B8 !important;
+    font-size: 0.95rem;
+    margin-bottom: 0;
+    opacity: 1 !important; 
+}
+
+
+.text-cyan { filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.5)); }
+.text-purple { filter: drop-shadow(0 0 8px rgba(155, 81, 224, 0.5)); }

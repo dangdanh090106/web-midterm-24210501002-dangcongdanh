@@ -1,15 +1,20 @@
+// assets/js/main.js
 
+// ==========================================
+// 1. CHỨC NĂNG RENDER, TÌM KIẾM & LỌC (courses.html)
+// ==========================================
 const courseList = document.getElementById('courseList');
 const searchBox = document.getElementById('searchBox');
 const categorySelect = document.getElementById('categorySelect');
 const btnReset = document.getElementById('btnReset');
 
-
+// Hàm lấy mảng dữ liệu JS để tự tạo giao diện Card HTML (Thỏa mãn mục 2 & 3 của thầy)
 function hienThiKhoaHoc(mangDuLieu) {
-    if (!courseList) return; 
-    courseList.innerHTML = ""; 
+    if (!courseList) return; // Nếu không ở trang courses.html thì bỏ qua
+    
+    courseList.innerHTML = ""; // Xóa dữ liệu cũ
 
-
+    // Duyệt mảng bằng vòng lặp cơ bản để tạo 8 card
     mangDuLieu.forEach(khoa => {
         const cardHtml = `
             <div class="col-md-3">
@@ -23,10 +28,11 @@ function hienThiKhoaHoc(mangDuLieu) {
                 </div>
             </div>
         `;
-        courseList.innerHTML += cardHtml; 
+        courseList.innerHTML += cardHtml; // Cộng dồn thẻ card vào lưới hiển thị
     });
 }
 
+// Hàm xử lý lọc và tìm kiếm dữ liệu (Thỏa mãn mục 4 & 5)
 function xuLyBoLoc() {
     const tuKhoa = searchBox.value.toLowerCase().trim();
     const danhMucChon = categorySelect.value;
@@ -38,12 +44,12 @@ function xuLyBoLoc() {
         return khopTen && khopDanhMuc;
     });
 
-    hienThiKhoaHoc(mangSauKhiLoc); 
+    hienThiKhoaHoc(mangSauKhiLoc); // Render lại mảng đã lọc
 }
 
-
+// Đăng ký sự kiện
 if (courseList) {
-    hienThiKhoaHoc(danhSachKhuaHoc); 
+    hienThiKhoaHoc(danhSachKhuaHoc); // Mặc định hiển thị đủ 8 khóa ban đầu
     searchBox.addEventListener('input', xuLyBoLoc);
     categorySelect.addEventListener('change', xuLyBoLoc);
     
@@ -54,6 +60,7 @@ if (courseList) {
     });
 }
 
+// Mở Modal chi tiết (Thỏa mãn mục 6)
 function showModal(tenKhua, noiDung) {
     document.getElementById('modalTitle').textContent = tenKhua;
     document.getElementById('modalBody').textContent = noiDung;
@@ -62,7 +69,9 @@ function showModal(tenKhua, noiDung) {
 }
 
 
-
+// ==========================================
+// 2. FORM VALIDATION & LOCALSTORAGE (register.html)
+// ==========================================
 const formDangKy = document.getElementById('formDangKy');
 
 if (formDangKy) {
@@ -84,6 +93,7 @@ if (formDangKy) {
         document.getElementById('errLop').textContent = "";
         document.getElementById('errKhoahoc').textContent = "";
 
+        // Kiểm tra validation (Thỏa mãn mục 8)
         if (hoten === "" || hoten.length < 3) {
             document.getElementById('errHoten').textContent = "Họ tên không được rỗng và từ 3 ký tự.";
             hopLe = false;
@@ -105,6 +115,7 @@ if (formDangKy) {
             hopLe = false;
         }
 
+        // Lưu LocalStorage (Thỏa mãn mục 9)
         if (hopLe) {
             const hocVienMoi = { id: Date.now(), name: hoten, email: email, phone: sdt, class: lop, course: khoahoc, note: ghichu };
             let danhSach = JSON.parse(localStorage.getItem('danhSachHocVien')) || [];
@@ -118,10 +129,13 @@ if (formDangKy) {
 }
 
 
-
+// ==========================================
+// 3. QUẢN LÝ DANH SÁCH & XÓA (registrations.html)
+// ==========================================
 const tableBody = document.getElementById('tableBody');
 const btnXoaTatCa = document.getElementById('btnXoaTatCa');
 
+// Hiển thị danh sách học viên từ LocalStorage (Thỏa mãn mục 10)
 function hienThiBangDuLieu() {
     if (!tableBody) return;
 
