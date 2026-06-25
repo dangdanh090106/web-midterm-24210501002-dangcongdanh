@@ -1,107 +1,147 @@
 
-const courseList = document.getElementById('courseList');
-const searchBox = document.getElementById('searchBox');
-const categorySelect = document.getElementById('categorySelect');
+const courseList = document.getElementById('courseContainer');
+const searchBox = document.getElementById('searchName');      
+const categorySelect = document.getElementById('filterCategory');
 const btnReset = document.getElementById('btnReset');
+
+const formDangKy = document.getElementById('registerForm');
+const selectCourseElement = document.getElementById('selectCourse');
+
+
+const tableBody = document.getElementById('registrationTableBody');
+const btnXoaTatCa = document.getElementById('btnClearAll');
 
 
 function hienThiKhoaHoc(mangDuLieu) {
-    if (!courseList) return; 
-    courseList.innerHTML = ""; 
+    if (!courseList) return;
+    courseList.innerHTML = "";
 
+    if (mangDuLieu.length === 0) {
+        courseList.innerHTML = `<div class="col-12 text-center text-muted my-4">Không tìm thấy khóa học nào phù hợp.</div>`;
+        return;
+    }
 
     mangDuLieu.forEach(khoa => {
         const cardHtml = `
-            <div class="col-md-3">
-                <div class="card h-100 course-card">
-                    <div class="card-body">
-                        <span class="badge bg-primary mb-2">${khoa.category.toUpperCase()}</span>
-                        <h5 class="card-title fw-bold">${khoa.name}</h5>
-                        <p class="card-text text-muted small">${khoa.desc}</p>
-                        <button class="btn btn-sm btn-outline-primary" onclick="showModal('${khoa.name}', '${khoa.detail}')">Xem chi tiết</button>
+            <div class="col-md-4">
+                <div class="card h-100 bg-black text-white border-secondary course-card shadow shadow-sm d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="${khoa.image || 'assets/images/default.jpg'}" class="card-img-top object-fit-cover" style="height: 180px;" alt="${khoa.title}">
+                        <div class="card-body">
+                            <div class="d-flex gap-2 mb-2">
+                                <span class="badge bg-primary text-uppercase">${khoa.category}</span>
+                                <span class="badge bg-info">${khoa.level}</span>
+                            </div>
+                            <h5 class="card-title fw-bold text-gradient">${khoa.title}</h5>
+                            <p class="card-text text-muted small">${khoa.description}</p>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 pt-0 pb-3">
+                        <button class="btn btn-sm btn-outline-primary w-100" onclick="showModal('${khoa.title}', '${khoa.image}', '${khoa.category}', '${khoa.level}', '${khoa.date}', \`${khoa.detail.replace(/\n/g, '<br>')}\`)">Xem chi tiết</button>
                     </div>
                 </div>
             </div>
         `;
-        courseList.innerHTML += cardHtml; 
+        courseList.innerHTML += cardHtml;
     });
 }
 
 function xuLyBoLoc() {
+    if (!searchBox || !categorySelect) return;
+   
     const tuKhoa = searchBox.value.toLowerCase().trim();
     const danhMucChon = categorySelect.value;
 
-    // Lọc mảng
-    const mangSauKhiLoc = danhSachKhuaHoc.filter(khoa => {
-        const khopTen = khoa.name.toLowerCase().includes(tuKhoa);
-        const khopDanhMuc = (danhMucChon === 'all') || (khoa.category === danhMucChon);
+    const mangSauKhiLoc = courses.filter(khoa => {
+        const khopTen = khoa.title.toLowerCase().includes(tuKhoa);
+        const khopDanhMuc = (danhMucChon === '') || (khoa.category === danhMucChon);
         return khopTen && khopDanhMuc;
     });
 
-    hienThiKhoaHoc(mangSauKhiLoc); 
+    hienThiKhoaHoc(mangSauKhiLoc);
 }
-
 
 if (courseList) {
-    hienThiKhoaHoc(danhSachKhuaHoc); 
-    searchBox.addEventListener('input', xuLyBoLoc);
-    categorySelect.addEventListener('change', xuLyBoLoc);
-    
-    btnReset.addEventListener('click', () => {
-        searchBox.value = '';
-        categorySelect.value = 'all';
-        hienThiKhoaHoc(danhSachKhuaHoc);
+    hienThiKhoaHoc(courses);
+    if (searchBox) searchBox.addEventListener('input', xuLyBoLoc);
+    if (categorySelect) categorySelect.addEventListener('change', xuLyBoLoc);
+    if (btnReset) {
+        btnReset.addEventListener('click', () => {
+            searchBox.value = '';
+            categorySelect.value = '';
+            hienThiKhoaHoc(courses);
+        });
+    }
+}
+
+function showModal(title, image, category, level, date, detailText) {
+    const modalTitle = document.getElementById('modalTitle');
+    const modalImage = document.getElementById('modalImage');
+    const modalCategory = document.getElementById('modalCategory');
+    const modalLevel = document.getElementById('modalLevel');
+    const modalDate = document.getElementById('modalDate');
+    const modalDetailText = document.getElementById('modalDetailText');
+    const targetModal = document.getElementById('courseDetailModal');
+
+    if (modalTitle) modalTitle.textContent = title;
+    if (modalImage) modalImage.src = image;
+    if (modalCategory) modalCategory.textContent = category;
+    if (modalLevel) modalLevel.textContent = level;
+    if (modalDate) modalDate.textContent = date;
+    if (modalDetailText) modalDetailText.innerHTML = detailText;
+   
+    if (targetModal) {
+        const formModal = new bootstrap.Modal(targetModal);
+        formModal.show();
+    }
+}
+
+if (selectCourseElement) {
+    courses.forEach(khoa => {
+        const option = document.createElement('option');
+        option.value = khoa.title;
+        option.textContent = khoa.title;
+        selectCourseElement.appendChild(option);
     });
 }
-
-function showModal(tenKhua, noiDung) {
-    document.getElementById('modalTitle').textContent = tenKhua;
-    document.getElementById('modalBody').textContent = noiDung;
-    const formModal = new bootstrap.Modal(document.getElementById('detailModal'));
-    formModal.show();
-}
-
-
-
-const formDangKy = document.getElementById('formDangKy');
 
 if (formDangKy) {
     formDangKy.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        const hoten = document.getElementById('txtHoten').value.trim();
-        const email = document.getElementById('txtEmail').value.trim();
-        const sdt = document.getElementById('txtSdt').value.trim();
-        const lop = document.getElementById('txtLop').value.trim();
-        const khoahoc = document.getElementById('selKhoahoc').value;
-        const ghichu = document.getElementById('txtGhichu').value.trim();
+        const hoten = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const sdt = document.getElementById('phone').value.trim();
+        const lop = document.getElementById('className').value.trim();
+        const khoahoc = selectCourseElement.value;
+        const ghichu = document.getElementById('note') ? document.getElementById('note').value.trim() : "";
 
         let hopLe = true;
 
-        document.getElementById('errHoten').textContent = "";
-        document.getElementById('errEmail').textContent = "";
-        document.getElementById('errSdt').textContent = "";
-        document.getElementById('errLop').textContent = "";
-        document.getElementById('errKhoahoc').textContent = "";
+        if(document.getElementById('errFullName')) document.getElementById('errFullName').textContent = "";
+        if(document.getElementById('errEmail')) document.getElementById('errEmail').textContent = "";
+        if(document.getElementById('errPhone')) document.getElementById('errPhone').textContent = "";
+        if(document.getElementById('errClassName')) document.getElementById('errClassName').textContent = "";
+        if(document.getElementById('errSelectCourse')) document.getElementById('errSelectCourse').textContent = "";
 
         if (hoten === "" || hoten.length < 3) {
-            document.getElementById('errHoten').textContent = "Họ tên không được rỗng và từ 3 ký tự.";
+            if(document.getElementById('errFullName')) document.getElementById('errFullName').textContent = "Họ tên không được rỗng và từ 3 ký tự.";
             hopLe = false;
         }
         if (email === "" || !email.includes('@')) {
-            document.getElementById('errEmail').textContent = "Email không được rỗng và phải đúng định dạng.";
+            if(document.getElementById('errEmail')) document.getElementById('errEmail').textContent = "Email không được rỗng và phải đúng định dạng.";
             hopLe = false;
         }
         if (sdt === "" || isNaN(sdt) || sdt.length < 9 || sdt.length > 11) {
-            document.getElementById('errSdt').textContent = "SĐT chỉ chứa số, độ dài từ 9 đến 11 số.";
+            if(document.getElementById('errPhone')) document.getElementById('errPhone').textContent = "SĐT chỉ chứa số, độ dài từ 9 đến 11 số.";
             hopLe = false;
         }
         if (lop === "") {
-            document.getElementById('errLop').textContent = "Lớp không được để trống.";
+            if(document.getElementById('errClassName')) document.getElementById('errClassName').textContent = "Lớp không được để trống.";
             hopLe = false;
         }
         if (khoahoc === "") {
-            document.getElementById('errKhoahoc').textContent = "Vui lòng chọn khóa học.";
+            if(document.getElementById('errSelectCourse')) document.getElementById('errSelectCourse').textContent = "Vui lòng chọn khóa học.";
             hopLe = false;
         }
 
@@ -118,36 +158,38 @@ if (formDangKy) {
 }
 
 
-
-const tableBody = document.getElementById('tableBody');
-const btnXoaTatCa = document.getElementById('btnXoaTatCa');
-
 function hienThiBangDuLieu() {
-    if (!tableBody) return;
+    if (!tableBody) return; 
 
     const danhSach = JSON.parse(localStorage.getItem('danhSachHocVien')) || [];
     tableBody.innerHTML = "";
 
+    if (danhSach.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-muted">Chưa có học viên nào đăng ký.</td></tr>`;
+        return;
+    }
+
+  
     danhSach.forEach((hv, index) => {
         tableBody.innerHTML += `
             <tr>
                 <td>${index + 1}</td>
-                <td class="fw-bold">${hv.name}</td>
+                <td class="fw-bold text-start ps-4">${hv.name}</td>
                 <td>${hv.email}</td>
                 <td>${hv.phone}</td>
                 <td>${hv.class}</td>
-                <td><span class="badge bg-primary">${hv.course}</span></td>
-                <td>${hv.note}</td>
-                <td class="text-center">
-                    <button class="btn btn-danger btn-sm" onclick="xoaMộtHocVien(${hv.id})">Xóa</button>
+                <td><span class="badge bg-primary text-uppercase">${hv.course}</span></td>
+                <td>
+                    <button class="btn btn-danger btn-sm" onclick="xoaMotHocVien(${hv.id})">Xóa Phieu</button>
                 </td>
             </tr>
         `;
     });
 }
 
-window.xoaMộtHocVien = function(maId) {
-    if (confirm("Bạn có chắc chắn muốn xóa học viên này?")) {
+
+window.xoaMotHocVien = function(maId) {
+    if (confirm("Bạn có chắc chắn muốn xóa phiếu đăng ký của học viên này?")) {
         let danhSach = JSON.parse(localStorage.getItem('danhSachHocVien')) || [];
         danhSach = danhSach.filter(hv => hv.id !== maId);
         localStorage.setItem('danhSachHocVien', JSON.stringify(danhSach));
@@ -157,7 +199,7 @@ window.xoaMộtHocVien = function(maId) {
 
 if (btnXoaTatCa) {
     btnXoaTatCa.addEventListener('click', () => {
-        if (confirm("Bạn có chắc chắn muốn xóa toàn bộ danh sách?")) {
+        if (confirm("Bạn có chắc chắn muốn xóa toàn bộ danh sách đăng ký?")) {
             localStorage.removeItem('danhSachHocVien');
             hienThiBangDuLieu();
         }
